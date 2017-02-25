@@ -20,6 +20,7 @@ CREATE TABLE category(
 );
 
 INSERT INTO "category" VALUES(1,'TaskApp',1);
+COMMIT;
 
 --status
 PRAGMA foreign_keys=OFF;
@@ -55,3 +56,5 @@ CREATE TABLE task (
 CREATE TABLE comments(id integer primary key autoincrement, content ntext, taskID references task(id), created datetime, user_id references user(id));
 
 CREATE TABLE files(name varchar(1000) not null, autoName varchar(255) not null, user_id references user(id), created_date timestamp);
+
+COMMIT;
