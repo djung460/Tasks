@@ -1,0 +1,67 @@
+{{ template "_head.html" . }}
+
+<div class="timeline">
+{{ if .Tasks }}  {{ range  $key, $value := .Tasks }}
+    <div class="note" id="{{ .ID }}">
+        <p class="noteHeading "> {{ $value.Title }} 
+        </p> <span class="toggle glyphicon glyphicon-resize-full"></span>
+
+        <span class="noteContent">
+            {{ $value.HTMLContent }}
+                 <div class="commentslist">
+		 {{ range $value.Comments }}
+                    <div class="comment">
+                        <span>{{ .Content  }}</span>
+                        <span class="timestamp">{{ .Author }} {{ .Created }}</span>
+                        <a href="/del-comment/{{ .ID }}"><span class="glyphicon glyphicon-trash timestamp"></span></a>
+                    </div> 
+                   {{ end }}
+                    
+                    <div class="comment">
+                        <form method="POST" action="/add-comment/">
+                        <textarea rows="2" cols="75" name="commentText" placeholder="Add Comment"></textarea>
+                        <input type="text" class="hidden" name="taskID" value="{{ $value.ID }}">
+                        <input type="submit" value="Comment" class="btn btn-primary" />
+                        </form> 
+                    </div>
+                 </div>
+        </span>
+
+        <span class="notefooter">
+        <ul class="menu">
+          <li role="presentation">Priority: {{ $value.Priority }}</li>
+          <li role="presentation">
+              <span class="glyphicon glyphicon-time"></span> {{ $value.Created }}</li> 
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="/trash/{{ $value.ID }}">
+                <span class="glyphicon glyphicon-trash"></span></a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="/complete/{{ $value.ID }}">
+                <span class="glyphicon glyphicon-check"></span></a>
+        </li>
+        <li role="presentation">
+            <a role="menuitem" tabindex="-1" href="/edit/{{ $value.ID }}">
+                <span class="glyphicon glyphicon-pencil"></span></a>
+        </li>
+        <li role="presentation">
+              <a href="/category/{{ $value.Category }}">{{ $value.Category }}</a>
+          </li>
+        </ul>
+        </span>
+    </div>
+	{{ end }}
+    
+<!-- this should be displayed when the tasks list is empty-->
+{{ else }}
+    <div class="note">
+        <p class="noteHeading">No Tasks here</p>
+        <p class="notefooter">Create new task
+            <button class="floating-action-icon-add" >
+                here </button>
+        </p>
+    </div>
+    {{end}}
+</div>
+
+{{ template "_foot.html" . }}
